@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>传奇 · 简易网页版</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ============================ 游戏层 ============================ -->
+<div id="gameLayer" class="hidden">
+
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- 顶部状态条 -->
+  <div id="hudTop">
+    <div class="hud-left">
+      <div class="avatar-box" id="lvText">Lv 1</div>
+      <div class="bars">
+        <div class="bar hp">
+          <div class="bar-fill" id="hpFill"></div>
+          <span class="bar-text" id="hpText">0 / 0</span>
+        </div>
+        <div class="bar mp">
+          <div class="bar-fill" id="mpFill"></div>
+          <span class="bar-text" id="mpText">0 / 0</span>
+        </div>
+        <div class="bar exp">
+          <div class="bar-fill" id="expFill"></div>
+          <span class="bar-text" id="expText">0 / 0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hud-right">
+      <div class="info-row"><span class="ico gold">¥</span><b id="goldText">0</b></div>
+      <div class="info-row"><span class="ico">地图</span><b id="mapText">-</b></div>
+      <div class="info-row">
+        <span id="connDot" class="dot bad"></span>
+        <span id="whoText" class="who">-</span>
+        <button id="logoutBtn" class="mini-btn">退出</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部快捷栏 -->
+  <div id="hudBottom">
+    <div class="slot" id="slotRed" title="红药水（快捷键 1）">
+      <div class="slot-icon red">红</div>
+      <span class="slot-key">1</span>
+      <span class="slot-count" id="redCount">0</span>
+    </div>
+    <div class="slot" id="slotBlue" title="蓝药水（快捷键 2）">
+      <div class="slot-icon blue">蓝</div>
+      <span class="slot-key">2</span>
+      <span class="slot-count" id="blueCount">0</span>
+    </div>
+    <div class="slot slot-skill" id="slotFireball" title="小火球（快捷键 F）：远程 + 落点溅射，耗蓝 4">
+      <div class="slot-icon fire">火</div>
+      <span class="slot-key">F</span>
+      <span class="slot-cost" id="fireballCost">4</span>
+      <div class="slot-cd" id="fireballCd"></div>
+    </div>
+    <div class="slot slot-skill" id="slotSummon" title="召唤宝宝（快捷键 Q）：耗蓝 1，最多同时 8 只">
+      <div class="slot-icon summon">宝</div>
+      <span class="slot-key">Q</span>
+      <span class="slot-count gold" id="petCount">0/8</span>
+    </div>
+    <div class="slot slot-skill" id="slotDismiss" title="解散全部宝宝（快捷键 E）">
+      <div class="slot-icon dismiss">散</div>
+      <span class="slot-key">E</span>
+    </div>
+    <div class="slot-spacer"></div>
+    <div class="hint">WASD 移动 · 左键点怪攻击 · 空格 锁定 · F 小火球 · Q 召唤宝宝</div>
+    <div class="slot-spacer"></div>
+    <button class="tab-btn" data-panel="bag">背包 <kbd>B</kbd></button>
+    <button class="tab-btn" data-panel="char">角色 <kbd>C</kbd></button>
+    <button class="tab-btn" data-panel="rank">排行 <kbd>L</kbd></button>
+  </div>
+
+  <!-- 背包面板 -->
+  <div id="bagPanel" class="panel hidden">
+    <div class="panel-head">
+      <span>背包（24 格）</span>
+      <button class="close-btn" data-close="bag">×</button>
+    </div>
+    <div class="panel-body">
+      <div id="bagGrid" class="bag-grid"></div>
+      <div class="panel-tip">点击装备即可穿戴 · 点格子底部 <b style="color:#d69bff">合成</b> 可把 3 件同品质装备合成更高一阶 · 装备栏点击可卸下</div>
+    </div>
+  </div>
+
+  <!-- 角色面板 -->
+  <div id="charPanel" class="panel hidden">
+    <div class="panel-head">
+      <span>角色</span>
+      <button class="close-btn" data-close="char">×</button>
+    </div>
+    <div class="panel-body">
+      <div id="equipGrid" class="equip-grid"></div>
+      <div id="statList" class="stat-list"></div>
+    </div>
+  </div>
+
+  <!-- 排行榜面板 -->
+  <div id="rankPanel" class="panel hidden">
+    <div class="panel-head">
+      <span>排行榜</span>
+      <button class="close-btn" data-close="rank">×</button>
+    </div>
+    <div class="panel-body">
+      <div id="rankList"></div>
+    </div>
+  </div>
+
+  <div id="tooltip" class="tooltip hidden"></div>
+</div>
+
+<!-- ============================ 登录层 ============================ -->
+<div id="loginLayer" class="hidden">
+  <div class="login-box">
+    <h1>传 奇</h1>
+    <p class="subtitle">简易网页版 · 打怪升级爆装备</p>
+
+    <div class="tabs">
+      <button id="tabLogin" class="active">登录</button>
+      <button id="tabReg">注册</button>
+    </div>
+
+    <form id="loginForm">
+      <input id="usernameInput" type="text" placeholder="用户名（3-16 位字母数字下划线）" autocomplete="username" required>
+      <input id="passwordInput" type="password" placeholder="密码（至少 6 位）" autocomplete="current-password" required>
+      <div id="loginMsg" class="login-msg"></div>
+      <button id="submitBtn" type="submit">登录</button>
+    </form>
+
+    <div class="help">
+      <b>操作说明</b>
+      <ul>
+        <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 或方向键移动</li>
+        <li>鼠标左键点击怪物开始攻击</li>
+        <li><kbd>空格</kbd> 锁定最近的怪物</li>
+        <li><kbd>1</kbd> 红药水 <kbd>2</kbd> 蓝药水</li>
+        <li><kbd>F</kbd> 小火球（远程技能，耗蓝 4）</li>
+        <li><kbd>Q</kbd> 召唤宠物 <kbd>E</kbd> 解散宠物</li>
+        <li><kbd>B</kbd> 背包 <kbd>C</kbd> 角色 <kbd>L</kbd> 排行榜</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/js/main.js"></script>
+</body>
+</html>

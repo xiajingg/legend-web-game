@@ -1,0 +1,14 @@
+{
+  "name": "legend-web-game",
+  "version": "1.0.0",
+  "description": "简易传奇类网页游戏：斜45度等距视角，打怪升级爆装备，Node 后端 0 依赖",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

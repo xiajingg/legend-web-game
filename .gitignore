@@ -1,0 +1,20 @@
+# 运行时数据（账号与存档）
+data/
+
+# 日志
+logs/
+
+# 本机专属配置（含本机绝对路径，不入库）
+backup/
+
+# 截图：只保留 README 引用的这几张，其余开发过程中的临时截图不入库
+.shots/*
+!.shots/game.png
+!.shots/props-v2.png
+!.shots/hero-only.jpg
+!.shots/orc-zoom.jpg
+!.shots/mir-style.png
+!.shots/fuse-compare-new.png
+
+# 系统文件
+.DS_Store
